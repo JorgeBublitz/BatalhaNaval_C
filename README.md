@@ -1,11 +1,10 @@
 # Batalha Naval | Jogo da Velha
-Projeto da Matéria C - Batalha Naval | Jogo da Velha
-Prof. Leonardo Angelo Virginio de Souto
+### Projeto da Matéria C - Batalha Naval | Jogo da Velha
+***Prof. Leonardo Angelo Virginio de Souto***
 
-Integrantes do Projeto: 
+### Integrantes do Projeto: 
 
-1º - Jorge Luis Heringer Bublitz
-2º - Íris C. Do. C. Lins
-3º - Vitor Ferreira Gonçalves Silva
-4º - Rafael Queiroz Almeida 
-
+1. ***Jorge Luis Heringer Bublitz***
+2. ***Íris C. Do. C. Lins***
+3. ***Vitor Ferreira Gonçalves Silva***
+4. ***Rafael Queiroz Almeida***
