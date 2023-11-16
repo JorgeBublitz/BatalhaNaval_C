@@ -169,15 +169,21 @@ void iniciaNaviosSozinho(int navios[][2]){
     }
 }
 
-void darTiroSozinho(int tiro[2],int shot1[][5],int tabuleiroSozinho){
+void darTiroSozinho(int tiro[2],int shot1[][5],int tabuleiroSozinho, int navios[][2]){
 int foi = 0, i;
 	while(foi == 0){
 		system("cls");
 		mostraTabuleiroSozinho(tabuleiroSozinho);
     	printf("Linha: ");
     	scanf("%d", &tiro[0]);
-
-   			if (tiro[0] < 1 || tiro[0] > 5) {
+    		if (tiro[0] == 777){
+				for(i = 0; i < 3; i++){
+			        printf("Tiro (%d,%d)\n", navios[i][0] + 1, navios[i][1] + 1);
+			    }
+			    sleep(2);
+			    continue;
+			}
+   			else if (tiro[0] < 1 || tiro[0] > 5) {
             	printf("Número " RED "INVÁLIDO" RESET ". Tente novamente.\n" );
             	sleep(2);
             	system("cls");
@@ -217,7 +223,7 @@ void darTiro(int tiro[2], int player, int tabuleiro, int tabuleiro2, int score, 
 		printf("\nVez do Player %d\n", player);
     	printf("Linha: ");
     	scanf("%d", &tiro[0]);
-    
+    		
    			if (tiro[0] < 1 || tiro[0] > 5) {
             	printf("Número " RED "INVÁLIDO" RESET ". Tente novamente.\n" );
             	sleep(2);
@@ -273,6 +279,7 @@ int acertouSozinho(int tiro[2], int navios[][2]){
     sleep(1);
     return 0;  // Deve retornar 0 em caso de erro
 }
+
     
 int acertou(int tiro[2], int navios[][2], int navios2[][2], int player) {
     int navio;
@@ -359,6 +366,8 @@ int main() {
 	int menu = 1;
     char op;
     char escolha = ' ';
+    char ascii = -42;
+   
     
     int tabuleiroSozinho[5][5];
 	int tabuleiro[5][5], tabuleiro2[5][5];
@@ -370,6 +379,7 @@ int main() {
     int tentativas = 0;
     
 	// Tela de boas-vindas
+	printf("%c%\n",ascii);
     printf("Bem-vindo ao menu:\n");
     sleep(2);
 
@@ -395,22 +405,25 @@ int main() {
                 		inicializaTabuleiro(tabuleiroSozinho);
 						inicializaShot(shot1);
 						iniciaNaviosSozinho(navios);
-						system("cls");
+						
 						
 						// Game Loop
 						while (acertos1 != 3){
+							system("cls");
 						    mostraTabuleiroSozinho(tabuleiroSozinho);
-						    darTiroSozinho(tiro, shot1, tabuleiroSozinho);
+						    darTiroSozinho(tiro, shot1, tabuleiroSozinho, navios);
 						    tentativas++;
 						    alteraTabuleiroSozinho(tiro, navios, tabuleiroSozinho, &acertos1);
 						    printf("%d", acertos1);
 							sleep(2);
-							
 						}
 						
 						// Game Over Message
-						printf("\n\n\nJogo terminado. Você acertou os 3 navios em %d tentativas", tentativas);
+						system("cls");
+						printf(BLU "PARABENS!!!\n" RESET);
 						mostraTabuleiroSozinho(tabuleiroSozinho);
+						printf("\nVocê acertou os 3 navios em" GRN " %d " RESET "tentativas", tentativas);
+						return 0;
    					}	
                 		
                     case '2':
@@ -422,9 +435,9 @@ int main() {
 				    	inicializaTabuleiro(tabuleiro2);
 				    	inicializaShot(shot2);
 				    	iniciaNavios(navios2, player);
-				    	system("cls");
 				    	player = (player == 1) ? 2 : 1;
 				    	do {
+				    		system("cls");
 					        mostraTabuleiro(tabuleiro, tabuleiro2, score, score2);
 					        darTiro(tiro, player, tabuleiro, tabuleiro2, score, score2, shot1, shot2);
 					        alteraTabuleiro(tiro, navios, navios2, tabuleiro, tabuleiro2, player, &score, &score2, &acertos1, &acertos2);
