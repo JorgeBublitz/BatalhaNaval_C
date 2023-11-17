@@ -1,6 +1,10 @@
 # Batalha Naval | Jogo da Velha
 ### Projeto da Matéria C - Batalha Naval | Jogo da Velha
 ***Prof. Leonardo Angelo Virginio de Souto***
+### Nome do grupo: 
+***Grupo do Caderno*** 
+### Nome do jogo: 
+***JOGO DO CADERNO*** 
 
 ### Integrantes do Projeto: 
 
