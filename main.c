@@ -34,30 +34,31 @@ void mostraTabuleiroSozinho(int tabuleiroSozinho[][5])
 
     int linha, coluna;
 
-        printf("\t1 \t2 \t3 \t4 \t5");
+        printf(YEL "\t    1    2    3    4    5" RESET);
         printf("\n");
 
         for(linha=0 ; linha < 5 ; linha++ ){
-            printf("%d",linha+1);
+            printf(YEL "\t%d " RESET,linha+1);
             for(coluna=0 ; coluna < 5 ; coluna++ ){
                 if (tabuleiroSozinho[linha][coluna] == -1) {
-            	printf("\t|");
+            	printf("|");
                 printf(BLU " ~ " RESET);
                 printf("|");
             	} else if (tabuleiroSozinho[linha][coluna] == 0) {
-                printf(RED "\t| * |" RESET);
+                printf(RED "| * |" RESET);
             	} else if (tabuleiroSozinho[linha][coluna] == 1) {
-                printf(GRN "\t| X |" RESET);
+                printf(GRN "| X |" RESET);
             	}
             }
             printf("\n");
         }
+        printf("\n");
     }
 
 
 void mostraTabuleiro(int tabuleiro[][5], int tabuleiro2[][5], int score, int score2) {
     int linha, coluna;
-    printf("\t\t|| BATALHA NAVAL ||\n\n");
+    printf("\n\n\n\n\n\t\t\t BATALHA "YEL "NAVAL\n\n" RESET);
     printf("\t  1 \t  2 \t  3 \t  4 \t  5 \t||Player 1 \t||Score: " YEL "%03d" RESET, score);
     printf("\n");
 
@@ -169,7 +170,7 @@ void iniciaNaviosSozinho(int navios[][2]){
     }
 }
 
-void darTiroSozinho(int tiro[2],int shot1[][5],int tabuleiroSozinho, int navios[][2]){
+void darTiroSozinho(int tiro[2],int shot1[][5],int tabuleiroSozinho, int navios[][2], int *tentativas){
 int foi = 0, i;
 	while(foi == 0){
 		system("cls");
@@ -220,7 +221,7 @@ void darTiro(int tiro[2], int player, int tabuleiro, int tabuleiro2, int score, 
 	while(foi == 0){
 		system("cls");
 		mostraTabuleiro(tabuleiro, tabuleiro2, score, score2);
-		printf("\nVez do Player %d\n", player);
+		printf("\n\nVez do Player %d\n", player);
     	printf("Linha: ");
     	scanf("%d", &tiro[0]);
     		
@@ -264,7 +265,7 @@ void darTiro(int tiro[2], int player, int tabuleiro, int tabuleiro2, int score, 
 		shot2[tiro[0]][tiro[1]] = 0;
 	}
 }
-int acertouSozinho(int tiro[2], int navios[][2]){
+int acertouSozinho(int tiro[2], int navios[][2], int *tentativas){
     int navio;
 
     for(navio = 0; navio < 3; navio++){
@@ -276,6 +277,7 @@ int acertouSozinho(int tiro[2], int navios[][2]){
     }
     
     printf(RED "ERROU" RESET " o tiro (%d,%d)\n", tiro[0] + 1, tiro[1] + 1);
+    *tentativas++;
     sleep(1);
     return 0;  // Deve retornar 0 em caso de erro
 }
@@ -318,8 +320,8 @@ int acertou(int tiro[2], int navios[][2], int navios2[][2], int player) {
     }
     return acerto;
 }
-void alteraTabuleiroSozinho(int tiro[2], int navios[][2], int tabuleiroSozinho[][5], int *acertos1){
-    if(acertouSozinho(tiro,navios)){
+void alteraTabuleiroSozinho(int tiro[2], int navios[][2], int tabuleiroSozinho[][5], int *acertos1, int *tentativas){
+    if(acertouSozinho(tiro,navios,tentativas)){
     	printf("==> Acertou ");
         tabuleiroSozinho[tiro[0]][tiro[1]] = 1;
         *acertos1 += 1;
@@ -364,9 +366,9 @@ int main() {
 	setlocale(LC_ALL,"Portuguese");
 	
 	int menu = 1;
-    char op;
-    char escolha = ' ';
-    char ascii = -42;
+	int ver = 0;
+    int op, op2, op3;
+    int tL, tC, qN;  //tL: Tamanho da linha | tC: Tamanho da coluna | qN: Quantidade de navios
    
     
     int tabuleiroSozinho[5][5];
@@ -375,89 +377,124 @@ int main() {
     int player = 1;
     int tiro[2], tiro2[2];
     int navios[3][2], navios2[3][2];
-    int score = 100, score2 = 100, acertos1 = 0, acertos2 = 0;
-    int tentativas = 0;
+    int score = 100, score2 = 100, acertos1 = 0, acertos2 = 0,tentativas = 0;
     
 	// Tela de boas-vindas
-	printf("%c%\n",ascii);
-    printf("Bem-vindo ao menu:\n");
+	printf("\n\n\n\t\t\tEm parcerias a " RED "Riot Games" RESET ":\n");
+	sleep(2);
+    printf("\t\t\t" RED "Grupo Caderno" RESET " apresenta...\n");
+    sleep(2);
+    system("cls");
+    
+    printf("\n\n\n\n\n\t\t\t JOGO ");
+    sleep(2);
+    printf("DO");
+    sleep(1);
+    printf(YEL " CADERNO" RESET);
     sleep(2);
 
     // Escolha de jogo
-    printf("Escolha seu jogo:\n Batalha Naval - 1 \nJogo da Velha - 2\n");
-    scanf(" %c", &op); 
+    while(ver != 1){		
+	    system("cls");
+	    printf("\n\n\n\n\n\t\t\t JOGO DO "YEL "CADERNO" RESET);
+	    printf("\n1 - Batalha Naval \n2 - " RED "SAIR\n" RESET);
+	    scanf("%d", &op);
+		if(op != 1 && op != 2){
+			printf("Numero Invalido");
+			continue;
+		}
+		ver = 1; 
+	}
 
     // Switch case para a escolha de jogo
     switch (op) {
-    	
-    	// Case Batalha Naval
-        case '1':
-            printf("Bem-vindo à Batalha Naval\n");
-            sleep(2);
-            while (menu) {
-                // Opções da Batalha Naval
-                printf("Opções:\n Single Player - 1\n Multiplayer - 2\n Ranking - 3\n Sair - 0\n");
-                scanf(" %c", &escolha);
-
-                
-                switch (escolha) {
-                	case '1':
-                		inicializaTabuleiro(tabuleiroSozinho);
-						inicializaShot(shot1);
-						iniciaNaviosSozinho(navios);
-						
-						
-						// Game Loop
-						while (acertos1 != 3){
-							system("cls");
-						    mostraTabuleiroSozinho(tabuleiroSozinho);
-						    darTiroSozinho(tiro, shot1, tabuleiroSozinho, navios);
-						    tentativas++;
-						    alteraTabuleiroSozinho(tiro, navios, tabuleiroSozinho, &acertos1);
-						    printf("%d", acertos1);
-							sleep(2);
-						}
-						
-						// Game Over Message
-						system("cls");
-						printf(BLU "PARABENS!!!\n" RESET);
-						mostraTabuleiroSozinho(tabuleiroSozinho);
-						printf("\nVocê acertou os 3 navios em" GRN " %d " RESET "tentativas", tentativas);
-						return 0;
-   					}	
-                		
-                    case '2':
-                    	inicializaTabuleiro(tabuleiro);
-				    	inicializaShot(shot1);
-				    	iniciaNavios(navios, player);
-				    	system("cls");
-				    	player = (player == 1) ? 2 : 1;		    
-				    	inicializaTabuleiro(tabuleiro2);
-				    	inicializaShot(shot2);
-				    	iniciaNavios(navios2, player);
-				    	player = (player == 1) ? 2 : 1;
-				    	do {
-				    		system("cls");
-					        mostraTabuleiro(tabuleiro, tabuleiro2, score, score2);
-					        darTiro(tiro, player, tabuleiro, tabuleiro2, score, score2, shot1, shot2);
-					        alteraTabuleiro(tiro, navios, navios2, tabuleiro, tabuleiro2, player, &score, &score2, &acertos1, &acertos2);
-							player = (player == 1) ? 2 : 1;
-							
-					        if (acertos1 == 3) {
-					            printf("Player 1 venceu!\n");
-					            sleep(2);
-					            system("cls");
-					            break;
-					        } else if (acertos2 == 3) {
-					            printf("Player 2 venceu!\n");
-					            sleep(2);
-					            system("cls");
-					            break;
-					        }
-					    	system("cls");
-				    	} while (1); 	
-					break;
-				}
+    	case 1:
+    		while (menu) {
+    			system("cls");
+    			printf("\n\n\n\n\n\t\t\t BATALHA "YEL "NAVAL" RESET);
+    			sleep(1);
+    			printf("\n " GRN "Single Player " RESET "- 1\n Multiplayer - 2\n " YEL "Personalisado" RESET " - 3\n " RED "Sair " RESET "- 0\n");
+    			scanf("%d", &op2);
+    			switch (op2) {
+    				case 1:
+    					inicializaTabuleiro(tabuleiroSozinho);
+    					inicializaShot(shot1);
+    					iniciaNaviosSozinho(navios);
+    					while (acertos1 != 3){
+    						system("cls");
+    						mostraTabuleiroSozinho(tabuleiroSozinho);
+    						darTiroSozinho(tiro, shot1, tabuleiroSozinho, navios, &tentativas);
+    						alteraTabuleiroSozinho(tiro, navios, tabuleiroSozinho, &acertos1, &tentativas);
+    						printf("%d", acertos1);
+    						sleep(2);
+    					}
+    					system("cls");
+    					printf(YEL "\t\t       VitóriA\n\n" RESET);
+    					mostraTabuleiroSozinho(tabuleiroSozinho);
+    					printf("\nVocê acertou os 3 navios em" GRN " %d " RESET "tentativas\n", tentativas);
+    					system("pause");
+    					continue;
+    				case 2:
+    					system("cls");
+    					printf("\n\n\n\n\t\t\t BATALHA "YEL "NAVAL\n\n" RESET);
+    					inicializaTabuleiro(tabuleiro);
+    					inicializaShot(shot1);
+    					iniciaNavios(navios, player);
+    					system("cls");
+    					printf("\n\n\n\n\t\t\t BATALHA "YEL "NAVAL\n\n" RESET);
+    					player = (player == 1) ? 2 : 1;	
+    					inicializaTabuleiro(tabuleiro2);
+    					inicializaShot(shot2);
+    					iniciaNavios(navios2, player);
+    					player = (player == 1) ? 2 : 1;
+    					do {
+    						system("cls");
+    						printf("\n\n\n\n\t\t\t BATALHA "YEL "NAVAL\n\n" RESET);
+    						mostraTabuleiro(tabuleiro, tabuleiro2, score, score2);
+    						darTiro(tiro, player, tabuleiro, tabuleiro2, score, score2, shot1, shot2);
+    						alteraTabuleiro(tiro, navios, navios2, tabuleiro, tabuleiro2, player, &score, &score2, &acertos1, &acertos2);
+    						player = (player == 1) ? 2 : 1;
+    						if (acertos1 == 3) {
+    							printf("Player 1 venceu!\n");
+    							sleep(2);
+    							system("cls");
+    							break;
+    						} else if (acertos2 == 3) {
+    							printf("Player 2 venceu!\n");
+    							sleep(2);
+    							system("cls");
+    							break;
+    						}
+    						system("cls");
+    					}while(1);
+    					continue;
+    				case 3:
+    					system("cls");
+    					printf("\n\n\n\n\t\t\t BATALHA "YEL "NAVAL" RESET);
+    					sleep(1);
+    					printf("\n1 - " GRN "Single Player" RESET "\n2 - " YEL "Multiplayer " RESET "\n3 - " RED "Sair\n" RESET);
+    					scanf("%d", &op3);
+    					switch(op3) {
+    						case 1:
+    							system("cls");
+    							printf("Tamanho do tabuleiro\n");
+    							printf("Linhas: ");
+    							scanf("%d", &tL);
+    							printf("Colunas: ");
+    							scanf("%d", &tC);
+    							sleep(1);
+    							system("cls");
+    							printf("Quantidade de navios: ");
+    							scanf("%d", &qN);		
+						}    						
+    				}
+    			}
+    			break;
+    		case 2:
+    			system("cls");
+				printf("Programa Finalizado");	
+				return 0;
 			}
-	    return 0;		
-		}
+    	}
+    
+
