@@ -11,6 +11,147 @@
 #define YEL   "\x1B[33m"
 #define RESET "\x1B[0m"
 
+//JOGO PERSONALISADO
+
+void inicializaTabuleiroPersonalizado(int tabuleiro[][15], int qL, int qC) {
+    int linha, coluna;
+    for (linha = 0; linha < qL; linha++) {
+        for (coluna = 0; coluna < qC; coluna++) {
+            tabuleiro[linha][coluna] = -1;
+        }
+    }
+}
+
+void inicializaShotPersonalizado(int shot[][15], int qL, int qC) {
+    int linha, coluna;
+    for (linha = 0; linha < qL; linha++) {
+        for (coluna = 0; coluna < qC; coluna++) {
+            shot[linha][coluna] = -1;
+        }
+    }
+}
+
+void mostraTabuleiroPersonalizado(int tabuleiroPersonalizado[][15], int qL, int qC) {
+    int linha, coluna;
+    printf("\n\n\n\n\t\t\t BATALHA "YEL "NAVAL\n\n" RESET);
+    printf("      ");
+    for (linha = 0; linha < qC; linha++) {
+        if (linha <= 8) {
+            printf("    %d", linha + 1);
+        } else {
+            printf("   %d", linha + 1);
+        }
+    }
+    printf("\n");
+
+    for(linha=0 ; linha < qL ; linha++ ){
+        printf(YEL "%d\t" RESET,linha+1);
+        for(coluna=0 ; coluna < qC ; coluna++ ){
+            if (tabuleiroPersonalizado[linha][coluna] == -1) {
+            	printf("|");
+                printf(BLU " ~ " RESET);
+                printf("|");
+           	} else if (tabuleiroPersonalizado[linha][coluna] == 0) {
+                printf(RED "| * |" RESET);
+           	} else if (tabuleiroPersonalizado[linha][coluna] == 1) {
+                printf(GRN "| X |" RESET);
+           	}
+        }
+        printf("\n");
+    }
+    printf("\n");
+}
+
+void iniciaNaviosPersonalizado(int navios[][2], int qL, int qC) {
+    srand(time(NULL));
+    int navio, anterior;
+
+    for (navio = 0; navio < 3; navio++) {
+        navios[navio][0] = rand() % qL;
+        navios[navio][1] = rand() % qC;
+
+        // Verifica se a posi√ß√£o j√° foi ocupada por outro navio
+        for (anterior = 0; anterior < navio; anterior++) {
+            while ((navios[navio][0] == navios[anterior][0]) && (navios[navio][1] == navios[anterior][1])) {
+                navios[navio][0] = rand() % qL;
+                navios[navio][1] = rand() % qC;
+                anterior = 0;  // Reinicia a verifica√ß√£o desde o in√≠cio
+            }
+        }
+    }
+}
+
+void darTiroPersonalizado(int tiro[2],int shot1[][15],int tabuleiro[][15], int navios[][2], int qL, int qC){
+int foi = 0, i;
+	while(foi == 0){
+		system("cls");
+		mostraTabuleiroPersonalizado(tabuleiro, qL, qC);
+    	printf("Linha: ");
+    	scanf("%d", &tiro[0]);
+    		if (tiro[0] == 777){
+				for(i = 0; i < 3; i++){
+			        printf("Tiro (%d,%d)\n", navios[i][0] + 1, navios[i][1] + 1);
+			    }
+			    sleep(2);
+			    continue;
+			}
+   			else if (tiro[0] < 1 || tiro[0] > qL) {
+            	printf("N√∫mero " RED "INV√ÅLIDO" RESET ". Tente novamente.\n" );
+            	sleep(2);
+            	system("cls");
+            	continue;
+        	}
+    	tiro[0]--;
+    
+    	printf("Coluna: ");
+    	scanf("%d", &tiro[1]);
+        	if (tiro[1] < 1 || tiro[1] > qC) {
+            	printf("N√∫mero " RED "INV√ÅLIDO" RESET ". Tente novamente.\n");
+            	sleep(2);
+            	system("cls");
+            	continue;
+        	}
+    	tiro[1]--;
+    	
+			if (shot1[tiro[0]][tiro[1]] == 0) {
+				// j√° atirou aqui
+				printf("j√° atirou aqui.\n" );
+				sleep(2);
+				system("cls");
+				continue;
+			}
+		foi = 1;
+	}
+
+	shot1[tiro[0]][tiro[1]] = 0;
+}
+
+
+int acertouPersonalizado(int tiro[2], int navios[][2])
+{
+    int navio;
+
+        for(navio=0 ; navio < 3 ; navio++){
+            if( tiro[0]==navios[navio][0] && tiro[1]==navios[navio][1]){
+                printf("Voc√™ acertou o tiro (%d,%d)\n",tiro[0]+1,tiro[1]+1);
+                return 1;
+            }
+        }
+        return 0;
+    }
+
+void alteraTabuleiroPersonalizado(int tiro[2], int navios[][2], int tabuleiro[][15], int *acertos1) {
+    if (acertouPersonalizado(tiro, navios)) {
+        printf("==> Acertou ");
+        tabuleiro[tiro[0]][tiro[1]] = 1;
+        *acertos1 += 1;
+    } else {
+        printf("==> Errou ");
+        tabuleiro[tiro[0]][tiro[1]] = 0;
+    }
+}
+
+//JOGO 1 JOGADOR
 
 void inicializaTabuleiro(int tabuleiro[][5]) {
     int linha, coluna;
@@ -31,7 +172,6 @@ void inicializaShot(int shot[][5]) {
 }
 void mostraTabuleiroSozinho(int tabuleiroSozinho[][5])
 {
-
     int linha, coluna;
 
         printf(YEL "\t    1    2    3    4    5" RESET);
@@ -103,11 +243,11 @@ void iniciaNavios(int navios[][2], int player) {
 
     for (navio = 0; navio < 1; navio++) {
         coordenadasRepetidas = 0; 
-        printf("|| LocalizaÁ„o dos navios do Player %d ||\n", player);
+        printf("|| Localiza√ß√£o dos navios do Player %d ||\n", player);
         printf("|| Linha (1 - 5): ");
         scanf("%d", &linha);
         if (linha < 1 || linha > 5) {
-            printf("N˙mero de linha" RED "inv·lido" RESET ". Tente novamente.\n");
+            printf("N√∫mero de linha" RED "inv√°lido" RESET ". Tente novamente.\n");
             sleep(2);
             system("cls");
             navio--;
@@ -118,7 +258,7 @@ void iniciaNavios(int navios[][2], int player) {
         printf("|| Coluna (1 - 5): ");
         scanf("%d", &coluna);
         if (coluna < 1 || coluna > 5) {
-            printf("N˙mero de coluna" RED "inv·lido" RESET ". Tente novamente.\n");
+            printf("N√∫mero de coluna" RED "inv√°lido" RESET ". Tente novamente.\n");
             sleep(2);
             system("cls");
             navio--;
@@ -135,7 +275,7 @@ void iniciaNavios(int navios[][2], int player) {
         }
     	
         if (coordenadasRepetidas == 1) {
-            printf("Coordenadas j· foram usadas. Tente novamente.\n");
+            printf("Coordenadas j√° foram usadas. Tente novamente.\n");
             sleep(2);
             system("cls");
             navio--;
@@ -150,20 +290,20 @@ void iniciaNaviosSozinho(int navios[][2]){
     srand(time(NULL));
     int navio, anterior;
 
-    // Gerar posiÁıes aleatÛrias para os navios
+    // Gerar posi√ß√µes aleat√≥rias para os navios
     for(navio = 0 ; navio < 3 ; navio++){
         navios[navio][0]= rand()%5;
         navios[navio][1]= rand()%5;
     }
 
-    // Verificar e corrigir colisıes
+    // Verificar e corrigir colis√µes
     for(navio = 0; navio < 3; navio++){
         for(anterior = 0; anterior < navio; anterior++){
             while((navios[navio][0] == navios[anterior][0]) && (navios[navio][1] == navios[anterior][1])){
-                // Corrigir colis„o gerando novas posiÁıes
+                // Corrigir colis√£o gerando novas posi√ß√µes
                 navios[navio][0] = rand() % 5;
                 navios[navio][1] = rand() % 5;
-                // Reiniciar a verificaÁ„o com todos os navios anteriores
+                // Reiniciar a verifica√ß√£o com todos os navios anteriores
                 anterior = 0;
             }
         }
@@ -185,7 +325,7 @@ int foi = 0, i;
 			    continue;
 			}
    			else if (tiro[0] < 1 || tiro[0] > 5) {
-            	printf("N˙mero " RED "INV¡LIDO" RESET ". Tente novamente.\n" );
+            	printf("N√∫mero " RED "INV√ÅLIDO" RESET ". Tente novamente.\n" );
             	sleep(2);
             	system("cls");
             	continue;
@@ -195,7 +335,7 @@ int foi = 0, i;
     	printf("Coluna: ");
     	scanf("%d", &tiro[1]);
         	if (tiro[1] < 1 || tiro[1] > 5) {
-            	printf("N˙mero " RED "INV¡LIDO" RESET ". Tente novamente.\n");
+            	printf("N√∫mero " RED "INV√ÅLIDO" RESET ". Tente novamente.\n");
             	sleep(2);
             	system("cls");
             	continue;
@@ -203,8 +343,8 @@ int foi = 0, i;
     	tiro[1]--;
     	
 			if (shot1[tiro[0]][tiro[1]] == 0) {
-				// j· atirou aqui
-				printf("j· atirou aqui.\n" );
+				// j√° atirou aqui
+				printf("j√° atirou aqui.\n" );
 				sleep(2);
 				system("cls");
 				continue;
@@ -224,9 +364,8 @@ void darTiro(int tiro[2], int player, int tabuleiro, int tabuleiro2, int score, 
 		printf("\n\nVez do Player %d\n", player);
     	printf("Linha: ");
     	scanf("%d", &tiro[0]);
-    		
-   			if (tiro[0] < 1 || tiro[0] > 5) {
-            	printf("N˙mero " RED "INV¡LIDO" RESET ". Tente novamente.\n" );
+    		if (tiro[0] < 1 || tiro[0] > 5) {
+            	printf("N√∫mero " RED "INV√ÅLIDO" RESET ". Tente novamente.\n" );
             	sleep(2);
             	continue;
         	}
@@ -234,8 +373,8 @@ void darTiro(int tiro[2], int player, int tabuleiro, int tabuleiro2, int score, 
     
     	printf("Coluna: ");
     	scanf("%d", &tiro[1]);
-        	if (tiro[1] < 1 || tiro[1] > 5) {
-            	printf("N˙mero " RED "INV¡LIDO" RESET ". Tente novamente.\n");
+    		if (tiro[1] < 1 || tiro[1] > 5) {	
+            	printf("N√∫mero " RED "INV√ÅLIDO" RESET ". Tente novamente.\n");
             	sleep(2);
             	system("cls");
             	continue;
@@ -244,20 +383,24 @@ void darTiro(int tiro[2], int player, int tabuleiro, int tabuleiro2, int score, 
     	
 		if (player == 1) {
 			if (shot1[tiro[0]][tiro[1]] == 0) {
-				// j· atirou aqui
-				printf("j· atirou aqui.\n" );
+				// j√° atirou aqui
+				printf("j√° atirou aqui.\n" );
 				sleep(2);
 				continue;
 			}
 		} else {
 			if (shot2[tiro[0]][tiro[1]] == 0) {
-				// j· atirou aqui
-				printf("j· atirou aqui.\n" );
+				// j√° atirou aqui
+				printf("j√° atirou aqui.\n" );
 				sleep(2);
 				continue;
 			}
 		}
 		foi = 1;
+	}
+	if(tiro[0] == -1 || tiro[1] == -1){
+		printf("Jogo finalizado");
+		return 0;
 	}
 	if (player == 1) {
 		shot1[tiro[0]][tiro[1]] = 0;
@@ -277,7 +420,6 @@ int acertouSozinho(int tiro[2], int navios[][2], int *tentativas){
     }
     
     printf(RED "ERROU" RESET " o tiro (%d,%d)\n", tiro[0] + 1, tiro[1] + 1);
-    *tentativas++;
     sleep(1);
     return 0;  // Deve retornar 0 em caso de erro
 }
@@ -362,14 +504,14 @@ void alteraTabuleiro(int tiro[2], int navios[][2],int navios2[][2], int tabuleir
     }
 }
 
+
 int main() {
 	setlocale(LC_ALL,"Portuguese");
 	
 	int menu = 1;
 	int ver = 0;
     int op, op2, op3;
-    int tL, tC, qN;  //tL: Tamanho da linha | tC: Tamanho da coluna | qN: Quantidade de navios
-   
+   	
     
     int tabuleiroSozinho[5][5];
 	int tabuleiro[5][5], tabuleiro2[5][5];
@@ -377,7 +519,15 @@ int main() {
     int player = 1;
     int tiro[2], tiro2[2];
     int navios[3][2], navios2[3][2];
-    int score = 100, score2 = 100, acertos1 = 0, acertos2 = 0,tentativas = 0;
+    int score = 100, score2 = 100, acertos1 = 0, acertos2 = 0, tentativas = 0;
+    
+    //variaveis do jogo personalisado 
+    int tabuleiroPersonalizado[15][15];
+    int shotPersonalizado[15][15];
+    int naviosPersonalizado[3][2];
+    int tiroPersonalizado[2];
+    int tentativasPersonalizado = 0, acertosPersonalizado = 0;
+    int qL, qC, lol = 1; //qL: Tamanho da linha | qC: Tamanho da coluna
     
 	// Tela de boas-vindas
 	printf("\n\n\n\t\t\tEm parcerias a " RED "Riot Games" RESET ":\n");
@@ -401,11 +551,12 @@ int main() {
 	    scanf("%d", &op);
 		if(op != 1 && op != 2){
 			printf("Numero Invalido");
+			sleep(2);
 			continue;
 		}
 		ver = 1; 
 	}
-
+			
     // Switch case para a escolha de jogo
     switch (op) {
     	case 1:
@@ -425,16 +576,22 @@ int main() {
     						mostraTabuleiroSozinho(tabuleiroSozinho);
     						darTiroSozinho(tiro, shot1, tabuleiroSozinho, navios, &tentativas);
     						alteraTabuleiroSozinho(tiro, navios, tabuleiroSozinho, &acertos1, &tentativas);
-    						printf("%d", acertos1);
+    						tentativas++;
+    						printf("%d %d", acertos1, tentativas);
     						sleep(2);
     					}
     					system("cls");
-    					printf(YEL "\t\t       VitÛriA\n\n" RESET);
+    					printf(YEL "\t\t       Vit√≥riA\n\n" RESET);
     					mostraTabuleiroSozinho(tabuleiroSozinho);
-    					printf("\nVocÍ acertou os 3 navios em" GRN " %d " RESET "tentativas\n", tentativas);
+    					tentativas -= 3;
+    					printf("\nVoc√™ acertou os 3 navios em" GRN " %d " RESET "tentativas\n", tentativas);
     					system("pause");
+    					tentativas = 0;
+    					acertos1 = 0;
     					continue;
     				case 2:
+    					acertos1 = 0;
+    					acertos2 = 0;
     					system("cls");
     					printf("\n\n\n\n\t\t\t BATALHA "YEL "NAVAL\n\n" RESET);
     					inicializaTabuleiro(tabuleiro);
@@ -453,6 +610,7 @@ int main() {
     						mostraTabuleiro(tabuleiro, tabuleiro2, score, score2);
     						darTiro(tiro, player, tabuleiro, tabuleiro2, score, score2, shot1, shot2);
     						alteraTabuleiro(tiro, navios, navios2, tabuleiro, tabuleiro2, player, &score, &score2, &acertos1, &acertos2);
+    						sleep(2);
     						player = (player == 1) ? 2 : 1;
     						if (acertos1 == 3) {
     							printf("Player 1 venceu!\n");
@@ -476,16 +634,51 @@ int main() {
     					scanf("%d", &op3);
     					switch(op3) {
     						case 1:
-    							system("cls");
-    							printf("Tamanho do tabuleiro\n");
-    							printf("Linhas: ");
-    							scanf("%d", &tL);
-    							printf("Colunas: ");
-    							scanf("%d", &tC);
-    							sleep(1);
-    							system("cls");
-    							printf("Quantidade de navios: ");
-    							scanf("%d", &qN);		
+    							while(lol == 1){		
+    								system("cls");
+    								printf("\n\n\n\n\t\t\t BATALHA "YEL "NAVAL\n\n" RESET);
+									printf("Tamanho do tabuleiro (2 - 15)\n");
+								    printf("Linhas: ");
+								    scanf("%d", &qL);
+								    if (qL < 2 || qL > 15) {
+							            printf("N√∫mero " RED "INV√ÅLIDO" RESET ". Tente novamente.\n" );
+							            sleep(2);
+							            system("cls");
+							            continue;
+							        }
+								    printf("Colunas: ");
+								    scanf("%d", &qC);
+								    if (qC < 2 || qC > 15 ) {
+							        	printf("N√∫mero " RED "INV√ÅLIDO" RESET ". Tente novamente.\n" );
+							            sleep(2);
+							            system("cls");
+							            continue;
+							        }
+							        lol = 0;
+								}
+								inicializaTabuleiroPersonalizado(tabuleiroPersonalizado, qL, qC);
+							    inicializaShotPersonalizado(shotPersonalizado, qL, qC);
+							    iniciaNaviosPersonalizado(naviosPersonalizado, qL, qC);	
+							    while (acertosPersonalizado != 3) {
+							        system("cls");
+							        mostraTabuleiroPersonalizado(tabuleiroPersonalizado, qL, qC);
+							        darTiroPersonalizado(tiroPersonalizado, shotPersonalizado, tabuleiroPersonalizado, naviosPersonalizado, qL, qC);
+							        alteraTabuleiroPersonalizado(tiroPersonalizado, naviosPersonalizado, tabuleiroPersonalizado, &acertosPersonalizado);
+							        tentativasPersonalizado++;
+							        printf("%d %d", acertosPersonalizado, tentativasPersonalizado);
+							        sleep(2);
+							    }
+							
+							    system("cls");
+							    mostraTabuleiroPersonalizado(tabuleiroPersonalizado, qL, qC);
+							    printf(YEL "Vit√≥ria\n\n" RESET);
+							    tentativasPersonalizado -= 3;
+							    printf("\nVoc√™ acertou os 3 navios em" GRN " %d " RESET "tentativas\n", tentativasPersonalizado);
+							    system("pause");
+							    tentativasPersonalizado = 0;
+							    acertosPersonalizado = 0;
+							    lol = 1;
+							    continue;		
 						}    						
     				}
     			}
@@ -497,4 +690,3 @@ int main() {
 			}
     	}
     
-
