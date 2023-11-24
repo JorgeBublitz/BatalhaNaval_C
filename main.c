@@ -93,7 +93,7 @@ void iniciaNaviosPersonalizadoMult(int navios[][2], int player, int qL, int qC) 
     for (navio = 0; navio < 3; navio++) {
         printf("\n\n\n\t\t\t BATALHA " YEL "NAVAL\n\n" RESET);
         coordenadasRepetidas = 0;
-        printf("|| Localização dos navios do Player %d ||\n", player);
+        printf("|| Localização dos navios %d do Player %d ||\n",navio, player);
         printf("|| Linha (1 - %d): ", qL);
 
         char linhaInput[10];
@@ -977,16 +977,16 @@ int main() {
     sleep(1);
     system("cls");
     int loop = 1;
-    char op1 = ' ', op2 = ' ', op3 = ' ', op4 = ' ';
+    char op1 = ' ', op2 = ' ', op3 = ' ', op4 = ' ', op5 = ' ';
     
-	while (op1 != '1' && op1 != '2') {
+	while (loop == 1) {
 		voltar:
 		system("cls");
 		op1 = ' ';
 		printf("\n\t\t\tJOGO DO "YEL "CADERNO" RESET);
-		printf("\n\n  1 - BATALHA NAVAL\n  2 - CRÉDITOS\n  0 - " RED "SAIR" RESET "\n  ");
+		printf("\n\n  1 - BATALHA NAVAL\n  2 - CRÉDITOS\n  3 - REGRAS\n  0 - " RED "SAIR" RESET "\n  ");
 		scanf(" %c", &op1);
-		if (op1 == '1' || op1 == '2' || op1 == '0') {
+		if (op1 == '1' || op1 == '2' || op1 == '3' || op1 == '0') {
 			switch (op1) {
 				case '1': //MENU DO JOGO
 					voltar3:
@@ -1137,7 +1137,7 @@ int main() {
 										    break;
 										case '2':
 											player = 1;
-											acertos = 0;
+											acertos1 = 0;
 											acertos2 = 0;
 											lol = 1;
 											qL = 0;
@@ -1234,8 +1234,47 @@ int main() {
 					voltar2:
 					system("cls");
 					printf("\n\t\t\tJOGO DO "YEL "CADERNO" RESET);
+					printf("\n\t\t\t" YEL "CRÉDITOS" RESET);
+					sleep(2);	
+					printf("\n\nDesenvolvimento:\n\n");
+					sleep(1);
+					printf("   [Jorge Luis] - Desenvolvedor\n");
+					sleep(1);
+					printf("   [Vitor Ferreira] - Desenvolvedor\n");
+					sleep(1);
+					printf("   [Íris Lins] - Desenvolvedor\n");
+					sleep(1);
+					printf("   [Rafael Queiroz] - Desenvolvedor de Testes\n\n");
+					sleep(2);
+					printf("Documentação:\n\n");
+					sleep(1);
+					printf("   [Íris Lins] - Especialista em Documentação\n");
+					sleep(1);
+					printf("   Sim, a que mais escreve errado kk");
+					sleep(2);
+					system("cls");
+					printf("\n\t\t\tJOGO DO "YEL "CADERNO" RESET);
 					printf("\n\t\t\t" YEL "CRÉDITOS" RESET);	
-					printf("\n\nLEO AMA JOGAR LOL, JOGA TODO MOMENTO S2\n");
+					printf("\n\nDesenvolvimento:\n\n");
+					printf("   [Jorge Luis] - Desenvolvedor\n");
+					printf("   [Vitor Ferreira] - Desenvolvedor\n");
+					printf("   [Íris Lins] - Desenvolvedor\n");
+					printf("   [Rafael Queiroz] - Desenvolvedor de Testes\n\n");
+					printf("Documentação:\n\n");
+					printf("   [Íris Lins] - Especialista em Documentação\n\n");
+					sleep(2);
+					printf("Equipe de Projeto:\n\n");
+					sleep(1);
+					printf("   [Jorge Luis] - Project Manager\n");
+					sleep(1);
+					printf("   [Vitor Ferreira] - Líder Técnico\n");
+					sleep(1);
+					printf("   [Íris Lins] - Especialista em Documentação\n\n");
+					sleep(2);
+					printf("Agradecimentos Especiais:\n\n");
+					sleep(1);
+					printf("   [Leonardo Souto] - Mestre Supremo de League of Legends\n\n\n");
+					
 					sleep(1);
 					printf("0 - VOLTAR\n");
 					scanf(" %c", &op3);
@@ -1247,13 +1286,134 @@ int main() {
 						goto voltar2;
 					}
 					goto voltar;
+					
+				case '3': //REGRAS
+					voltarMenuRegras:
+					system("cls");
+					printf("\n\t\t\tJOGO DO "YEL "CADERNO" RESET);
+					printf("\n\t\t\t"YEL "REGRAS" RESET);
+					printf("\n\n  1 - MODO SOLITÁRIO\n  2 - DOIS JOGADORES\n  3 - MODO PERSONALIZADO\n  0 - "RED"VOLTAR"RESET"\n  ");
+					scanf(" %c", &op5);
+						switch(op5){
+							case '1':
+								voltarRegras1:
+								system("cls");
+								printf("\n\t\t\tJOGO DO "YEL "CADERNO" RESET);
+								printf("\n\t\t\t"YEL "REGRAS\n\n" RESET);
+								printf("Batalha Naval - Modo Solitário:\n\n");
+								printf("  Objetivo:\n");
+								printf("Encontrar e afundar os 3 navios no menor número possível de tentativas.\n\n");
+								printf("  Tabuleiro:\n");
+								printf("O tabuleiro é uma grade 5x5, numerado de 1 a 5 em ambas as linhas e colunas.\n\n");
+								printf("  Navios:\n");
+								printf("Há 3 navios no tabuleiro, cada um ocupando uma única célula.\n\n");
+								printf("  Pontuação:\n");
+								printf("Cada acerto ganha 100 pontos.\n");
+								printf("Cada erro resulta em uma penalidade de 20 pontos.\n");
+								printf("O jogo continua até que todos os 3 navios sejam encontrados.\n\n");
+								printf("  Jogabilidade:\n");	
+								printf("O jogador escolhe uma posição no formato linha e coluna (por exemplo, 3 4).\n");
+								printf("O jogo verifica se há um navio nessa posição.\n");
+								printf("Se acertar, o jogador ganha 100 pontos e é informado sobre o acerto.\n");
+								printf("Se errar, o jogador perde 20 pontos e é informado sobre o erro.\n");
+								printf("O jogador continua a escolher posições até encontrar todos os 3 navios.\n");
+								printf("O jogo termina quando todos os navios forem encontrados.\n\n");
+								printf("  Regras Adicionais:\n");
+								printf("A posição escolhida deve ser um número de 1 a 5 em ambas as coordenadas.\n\n");
+								printf("0 - VOLTAR\n");
+								scanf(" %c", &op5);
+								if (op5 != '0') {
+									printf(RED "Número Inválido" RESET);
+									sleep(1);
+									system("cls");
+									op3 = ' ';
+									goto voltarRegras1;
+								}
+								goto voltarMenuRegras;
+							case '2':
+								voltarRegras3:
+								system("cls");
+								printf("Batalha Naval - Modo Dois Jogadores:\n\n");
+								printf("  Objetivo:\n");
+								printf("Cada jogador tenta afundar os navios do oponente antes de ter seus próprios navios afundados.\n\n");
+								printf("  Preparação:\n");
+								printf("Cada jogador escolhe as posições para seus 3 navios no tabuleiro 5x5, sem que o oponente saiba.\n\n");
+								printf("  Tabuleiro:\n");
+								printf("O tabuleiro é uma grade 5x5, numerado de 1 a 5 em ambas as linhas e colunas.\n\n");
+								printf("  Navios:\n");
+								printf("Cada jogador possui 3 navios. A posição de cada navio é escolhida pelo jogador no início do jogo.\n\n");
+								printf("  Pontuação:\n");
+								printf("Cada acerto ganha 100 pontos.\n");
+								printf("Cada erro resulta em uma penalidade de 20 pontos.\n");
+								printf("O jogo continua até que todos os navios de um jogador sejam afundados.\n\n");
+								printf("  Jogabilidade:\n");
+								printf("Os jogadores alternam entre escolher uma célula no formato linha e coluna (por exemplo, 3 4) para atacar o oponente.\n");
+								printf("O jogo verifica se há um navio na célula escolhida do oponente.\n");
+								printf("Se acertar, o jogador ganha 100 pontos e é informado sobre o acerto.\n");
+								printf("Se errar, o jogador perde 20 pontos e é informado sobre o erro.\n");
+								printf("Os jogadores continuam alternando entre escolher células até que todos os navios de um jogador sejam afundados.\n");
+								printf("O jogo termina quando todos os navios de um jogador forem afundados.\n\n");
+								printf("  Regras Adicionais:\n");
+								printf("A célula escolhida deve ser um número de 1 a 5 em ambas as coordenadas.\n\n");
+								printf("  Exemplo de Feedback:\n");
+								printf("Acertou! +100 pontos.\n");
+								printf("Errou! -20 pontos. Tente novamente.\n\n");
+								printf("0 - VOLTAR\n");
+								scanf(" %c", &op5);
+								if (op5 != '0') {
+									printf(RED "Número Inválido" RESET);
+									sleep(1);
+									system("cls");
+									op3 = ' ';
+									goto voltarRegras2;
+								}
+								goto voltarMenuRegras;
+							case '3':
+								voltarRegras2:
+								system("cls");
+								printf("Batalha Naval - Modo Personalizado:\n\n");
+								printf("  Objetivo:\n");
+								printf("Os jogadores (ou jogador solitário) tentam afundar os navios do oponente (ou do próprio no modo solitário) antes de ter seus próprios navios afundados.\n\n");
+								printf("  Configuração:\n");
+								printf("Escolha o modo de jogo:\n");
+								printf("Solitário: O jogador define o tamanho do tabuleiro (de 2 a 15) e\n as posições dos 3 navios são automática.\n");
+								printf("Dois Jogadores: Cada jogador define o tamanho do tabuleiro (de 2 a 10) \ne escolhe as posições para seus 3 navios.\n\n");
+								printf("  Tabuleiro:\n");
+								printf("O tabuleiro é uma grade de tamanho definido pelo jogador, numerado de 1 até o tamanho do tabuleiro em ambas as linhas e colunas.\n\n");
+								printf("  Navios:\n");
+								printf("Cada jogador possui 3 navios. As posições de cada navio são escolhidas pelo(s) jogador(es) no início do jogo,\nou configuradas automaticamente no modo solitário.\n\n");
+								printf("  Jogabilidade:\n");
+								printf("Os jogadores (ou jogador solitário) alternam entre escolher uma célula no formato linha e coluna (por exemplo, 3 4) para atacar o oponente.\n");
+								printf("O jogo verifica se há um navio na célula escolhida do oponente (ou do próprio no modo solitário).\n");
+								printf("Se acertar, o jogador é informado sobre o acerto.\n");
+								printf("Se errar, o jogador é informado sobre o erro.\n");
+								printf("Os jogadores continuam alternando entre escolher células até que todos os navios de um jogador sejam afundados.\n");
+								printf("O jogo termina quando todos os navios de um jogador forem afundados.\n\n");
+								printf("  Regras Adicionais:\n");
+								printf("A célula escolhida deve ser um número de 1 até o tamanho do tabuleiro em ambas as coordenadas.\n");
+								printf("Não há sistema de pontuação; o objetivo é simplesmente afundar todos os navios.\n");
+								printf("Se um jogador atingir o objetivo antes do outro, ou se o jogador solitário afundar os navios, o jogo termina.\n\n");
+								printf("0 - VOLTAR\n");
+								scanf(" %c", &op5);
+								if (op5 != '0') {
+									printf(RED "Número Inválido" RESET);
+									sleep(1);
+									system("cls");
+									op3 = ' ';
+									goto voltarRegras3;
+								}
+								goto voltarMenuRegras;
+							case '0':
+								goto voltar;		
+						}
 				case '0':  //SAIR DO JOGO
 					op1 = ' ';
 					return 0;
-			}
+				default:
+					continue;
+				}
 		} else {
-			system("cls");
-			printf(RED "Número Inválido" RESET);
+			printf(RED "\nNúmero Inválido" RESET);
 			sleep(1);
 			system("cls");
 			continue;
