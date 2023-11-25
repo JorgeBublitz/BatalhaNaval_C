@@ -93,7 +93,7 @@ void iniciaNaviosPersonalizadoMult(int navios[][2], int player, int qL, int qC) 
     for (navio = 0; navio < 3; navio++) {
         printf("\n\n\n\t\t\t BATALHA " YEL "NAVAL\n\n" RESET);
         coordenadasRepetidas = 0;
-        printf("|| Localização dos navios %d do Player %d ||\n",navio, player);
+        printf("|| Localização dos navios %d do Player %d ||\n",navio+1 , player);
         printf("|| Linha (1 - %d): ", qL);
 
         char linhaInput[10];
