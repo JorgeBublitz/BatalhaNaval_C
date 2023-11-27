@@ -867,7 +867,7 @@ int acertouSozinho(int tiro[2], int navios[][2], int *tentativas){
 int acertou(int tiro[2], int navios[][2], int navios2[][2], int player) {
     int navio;
     int acerto = 0;
-    
+
     if (player == 1) {
         for (navio = 0; navio < 3; navio++) { // Check all 3 ships for player 1
             if (tiro[0] == navios2[navio][0] && tiro[1] == navios2[navio][1]) {
@@ -876,12 +876,10 @@ int acertou(int tiro[2], int navios[][2], int navios2[][2], int player) {
                 acerto = 1;
                 break;
             }
-            else if(tiro[0] != navios2[navio][0] && tiro[1] != navios2[navio][1]) {
-                printf("Player 1 " RED "ERROU" RESET " o tiro (%d,%d)\n", tiro[0] + 1, tiro[1] + 1);
-                sleep(2);
-                acerto = 0;
-                break;
-        	}
+        }
+        if (acerto == 0) {
+            printf("Player 1 " RED "ERROU" RESET " o tiro (%d,%d)\n", tiro[0] + 1, tiro[1] + 1);
+            sleep(2);
         }
     } else if (player == 2) {
         for (navio = 0; navio < 3; navio++) { // Check all 3 ships for player 2
@@ -891,14 +889,13 @@ int acertou(int tiro[2], int navios[][2], int navios2[][2], int player) {
                 acerto = 1;
                 break;
             }
-            else if(tiro[0] != navios[navio][0] && tiro[1] != navios[navio][1]) {
-                printf("Player 2 " RED "ERROU" RESET " o tiro (%d,%d)\n", tiro[0] + 1, tiro[1] + 1);
-                sleep(2);
-                acerto = 0;
-                break;
-        	}
+        }
+        if (acerto == 0) {
+            printf("Player 2 " RED "ERROU" RESET " o tiro (%d,%d)\n", tiro[0] + 1, tiro[1] + 1);
+            sleep(2);
         }
     }
+
     return acerto;
 }
 
