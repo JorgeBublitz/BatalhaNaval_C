@@ -117,7 +117,7 @@ void iniciaNaviosPersonalizadoMult(int navios[][2], int player, int qL, int qC) 
             navio--;
             continue;
         }
-        navios[navio][0] = linha - 1;
+        navios[navio][0] = linha;
 
         printf("|| Coluna (1 - %d): ", qC);
 
@@ -142,7 +142,7 @@ void iniciaNaviosPersonalizadoMult(int navios[][2], int player, int qL, int qC) 
             navio--;
             continue;
         }
-        navios[navio][1] = coluna - 1;
+        navios[navio][1] = coluna;
 
         for (i = 0; i < navio; i++) {
             if (navios[i][0] == linha - 1 && navios[i][1] == coluna - 1) {
