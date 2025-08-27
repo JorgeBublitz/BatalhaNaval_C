@@ -1,5 +1,5 @@
 # Batalha Naval 
-### Projeto da Matéria C - Batalha Naval
+### Projeto em C - Batalha Naval
 ***Prof. Leonardo Angelo Virginio de Souto***
 ### Nome do grupo: 
 ***Grupo do Caderno*** 
